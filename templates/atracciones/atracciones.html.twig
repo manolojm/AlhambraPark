@@ -1,0 +1,80 @@
+{# atracciones.html.twig #}
+{% extends 'base.html.twig' %}
+{% block head %}
+
+    {% block title %}Atracciones{% endblock %}
+
+{% endblock %}
+
+{% block body %}
+    <main>
+
+        <!-- Título de la sección -->
+        <h2 class = "text-center">Atracciones
+
+            {% if is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('easyadmin') }}" >
+                    <button type="button" class="btn btn-success">
+                        Editar <i class="fas fa-pencil-alt"></i>
+                    </button>
+                </a>
+            {% endif %}
+        </h2>
+
+        {% set idName = 1 %}
+
+        {% if atracciones|length > 0 %}
+
+            <div class="listaAtracciones">
+                {% for atraccion in atracciones %}
+
+                    <article class="atraccion border border-dark">
+
+                        <a name="{{atraccion.id}}" class="enlaceLimpio"
+                           href="{{ path('atraccion', { 'nombre': atraccion.nombre }) }}">  
+
+                            <img width="300px" alt="200px" 
+                                 src="{{ asset('images/' ~ atraccion.id ~ '/' ~ atraccion.imagen1 ~ '.jpg') }}">
+
+                            <h3 class="text-center">{{ atraccion.nombre }}</h3>
+                        </a>
+
+                    </article>  
+
+                    {% set idName = idName + 1 %}
+
+                {% endfor %}
+            </div>
+
+        {% else %}
+            <div class = "entradasTabla" id = "resumen">
+                <h4 class="text-center">No hay atracciones</h4>
+
+            </div>
+        {% endif %}
+
+        <div class="text-center">
+            
+            <!-- Enlaces para el móvil -->
+            <div id="misTarget" >
+                Atracciones disponibles:<br>
+                {% for atraccion in atracciones %}
+                <button><a href="#{{atraccion.id}}">{{atraccion.nombre}}</a></button>
+                {% endfor %}
+
+            </div>
+        </div><br>
+
+        <div class="text-center">
+
+            <!-- Botón volver -->
+            <a href="{{path('inicio')}}">
+                <button type="button" class="btn btn-secondary">
+                    Volver
+                </button>
+            </a>
+        </div>
+
+    </main>
+
+{% endblock %}

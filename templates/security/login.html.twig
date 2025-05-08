@@ -1,0 +1,114 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Iniciar Sesión{% endblock %}
+
+
+{% block body %}
+
+    <div class="p-2">
+        <form class="form-signin" method="post">
+
+            <!-- Mensaje de error -->
+            {% if error %}
+                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
+
+            <div class="card border-primary rounded-0">
+
+                <!-- Cabecera -->
+                <div class="card-header p-0">
+                    <div class="bg-info text-white text-center p-2">
+                        <h3><i class="fas fa-user-tie"></i> Iniciar sesión</h3>
+                    </div>
+                </div>
+                <div class="card-body p-3">
+
+                    <!-- Introdocir correo -->
+                    <div class="form-group">
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text"><i class="fa fa-envelope text-info"></i></div>
+                            </div>
+                            <label for="inputEmail" class="sr-only">Email address</label>
+                            <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" placeholder="Correo electrónico" required autofocus>
+                        </div>
+                    </div>
+
+                    <!-- Introducir contraseña -->
+                    <div class="form-group">
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text"><i class="fas fa-key text-info"></i></div>
+                            </div>
+                            <label for="inputPassword" class="sr-only">Password</label>
+                            <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Contraseña" required>
+                        </div>
+                    </div>
+
+                    <!-- Campo oculto (csrf) -->
+                    <input type="hidden" name="_csrf_token"
+                           value="{{ csrf_token('authenticate') }}">
+
+                    <!-- Opción de recordar usuario -->
+                    <div class="checkbox mb-3">
+                        <label>
+                            <input type="checkbox" name="_remember_me"> Recuérdame
+                        </label>
+                    </div>
+
+                    <!-- Botón para iniciar sesión -->
+                    <div class="text-center">
+                        <button class="btn btn-info btn-block rounded-0 py-2" type="submit">
+                            Iniciar sesión
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="p-2 d-flex flex-wrap">
+        <div class="card border-right-0 border-primary rounded-0 w-50">
+            <div class="card-body p-3">
+
+                <!-- Si ha olvidado la contraseña... -->
+                <div class="text-center">
+                    ¿Ha olvidado la contraseña?
+                    <button onclick="recuperar();" class="btn btn-info btn-block rounded-0 py-2 mt-2">
+                        Recuperar contraseña
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card border-primary rounded-0 w-50">
+            <form class="form-signin" action="register">
+                <div class="card-body p-3">
+
+                    <!-- Si no dispone de cuenta... -->
+                    <div class="text-center">
+                        ¿No tiene cuenta?
+                        <button class="btn btn-info btn-block rounded-0 py-2 mt-2">
+                            Registrarse
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+
+        /**********************************************************************/
+
+        // Función para recuperar la contraseña
+        function recuperar() {
+            alert("Póngase en contacto con un administrador");
+            window.location.replace("{{ path('contacto')}}");
+        }
+
+        /**********************************************************************/
+
+    </script>
+
+{% endblock %}

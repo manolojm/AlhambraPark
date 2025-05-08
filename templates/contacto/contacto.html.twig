@@ -1,0 +1,105 @@
+{# contacto.html.twig #}
+{% extends 'base.html.twig' %}
+{% block head %}
+
+    {% block title %}Contacto{% endblock %}
+
+{% endblock %}
+
+{% block body %}
+
+    <main>
+        
+        <!-- Formulario de contacto -->
+        <div class="p-2">
+            <form method="post">
+                <div class="card border-primary rounded-0">
+                    <div class="card-header p-0">
+                        <div class="bg-info text-white text-center p-2">
+                            <h3><i class="fa fa-envelope"></i> Contacto</h3>
+                            <p class="m-0">Te ayudaremos con gusto</p>
+                        </div>
+                    </div>
+                    <div class="card-body p-3">
+
+                        <!-- Nombre y apellidos -->
+                        <div class="form-group">
+                            <div class="input-group mb-2">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text"><i class="fa fa-user text-info"></i></div>
+                                </div>
+                                <input name = "nombre" type="text" class="form-control" id="nombre" placeholder="Nombre y Apellidos" required>
+                            </div>
+                        </div>
+                        
+                        <!-- Correo -->
+                        <div class="form-group">
+                            <div class="input-group mb-2">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text"><i class="fa fa-envelope text-info"></i></div>
+                                </div>
+                                <input name = "correo" type="email" class="form-control" id="correo" placeholder="Correo electrónico" required>
+                            </div>
+                        </div>
+
+                        <!-- Comentario -->
+                        <div class="form-group">
+                            <div class="input-group mb-2">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text"><i class="fa fa-comment text-info"></i></div>
+                                </div>
+                                <textarea id = "comentario" name = "comentario" class="form-control" placeholder="Envianos tu Mensaje" required></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Botón enviar -->
+                        <div class="text-center">
+                            <button onclick="subirFormularioContacto();" class="btn btn-info btn-block rounded-0 py-2">Enviar</button>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+
+        <div class="text-center">
+
+            <!-- Botón volver -->
+            <a href="{{path('inicio')}}">
+                <button type="button" class="btn btn-secondary">
+                    Volver
+                </button>
+            </a>
+        </div>
+
+    </main>
+
+    <script>
+        
+        /**********************************************************************/
+        
+        // Función para enviar los comentarios
+        function subirFormularioContacto() {
+            var nombre = $('#nombre').val();
+            var correo = $('#correo').val();
+            var comentario = $('#comentario').val();
+
+            $.ajax({
+                type: "POST",
+                url: "{{path('formulariocontacto')}}",
+                data: {
+                    nombre: nombre,
+                    correo: correo,
+                    comentario: comentario
+                },
+                success: function (response) {
+                    alert("Su mensaje ha sido enviada");
+                    window.location.replace("{{ path('inicio')}}"); 
+                }
+            });
+        }
+        
+        /**********************************************************************/
+    </script>
+
+{% endblock %}

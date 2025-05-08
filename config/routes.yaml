@@ -1,0 +1,78 @@
+# config/routes.yaml
+
+# Rutas principales
+inicio:
+    path: /
+    controller: App\Controller\ParqueController::inicio
+
+atracciones:
+    path:    /atracciones/
+    controller: App\Controller\AtraccionesController::atracciones
+
+entradas:
+    path:    /entradas/
+    controller: App\Controller\EntradasController::entradas
+    
+contacto:
+    path:    /contacto/
+    controller: App\Controller\ContactoController::contacto
+    
+login:
+    path:    /login/
+    controller: App\Controller\AtraccionesController::login
+    
+# Rutas de atracciones
+atraccion:
+    path:    /atracciones/{nombre}
+    controller: App\Controller\AtraccionesController::atraccion
+
+atraccionfavorito:
+    path:    /favorito/anadir
+    controller: App\Controller\AtraccionesController::anadirFavorito
+    
+quitarfavorito:
+    path:    /favorito/quitar
+    controller: App\Controller\AtraccionesController::quitarFavorito
+
+mostrarfavorito:
+    path:    /favorito/mostrar/{usuario}
+    controller: App\Controller\AtraccionesController::mostrarFavorito    
+   
+# Rutas de entradas
+entrada:
+    path:    /entradas/{nombre}
+    controller: App\Controller\EntradasController::entrada
+    
+comprarentradas:
+    path:    /comprar/comprar
+    controller: App\Controller\EntradasController::comprarEntradas
+ 
+mostrarentradas:
+    path:    /mis_entradas/{usuario}
+    controller: App\Controller\EntradasController::mostrarEntradas 
+    
+entradasdatos:
+    path:    /admin/mostrar/entradas
+    controller: App\Controller\EntradasController::entradasDatos
+
+# Rutas de contacto   
+mensajes:
+    path:    /admin/mensajes
+    controller: App\Controller\ContactoController::mensajes
+    
+formulariocontacto:
+    path:    /contacto/enviar
+    controller: App\Controller\ContactoController::formularioContacto
+    
+mostrarcontacto:
+    path:    /contacto/mostrar
+    controller: App\Controller\ContactoController::mostrarContacto
+    
+quitarmensaje:
+    path:    /admin/mensaje/quitar
+    controller: App\Controller\ContactoController::quitarMensaje
+ 
+# Rutas de perfil
+editardatos:
+    path:    /user/cambiar/datos/{usuarioId}
+    controller: App\Controller\AccountController::cambiarDatos

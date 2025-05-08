@@ -1,0 +1,15 @@
+# config/packages/easy_admin.yaml
+easy_admin:
+    user:
+        name_property_path: 'email'
+        avatar_property_path: 'gravatar'
+        
+    site_name: 'Administración'
+    
+    entities:
+        Atracciones:
+            class: App\Entity\Atracciones
+        Entradas:
+            class: App\Entity\Entradas
+        Usuarios:
+            class: App\Entity\User 

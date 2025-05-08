@@ -1,0 +1,17 @@
+INSERT INTO entradas
+	VALUES (1, 'Entrada Normal', 20, 'Entrada de adulto (11 a 59 años) de 1 día al Alhambra Park. Válida de lunes a domingos de la temporada 2019.');
+
+INSERT INTO entradas
+	VALUES (2, 'Entrada Reducida', 15, 'Entrada Infantil (4 a 10 años) o senior (a partir de 60 años) de 1 día al Alhambra Park. Válida de lunes a domingos de la temporada 2019.');
+
+INSERT INTO entradas
+	VALUES (3, 'Entrada Familiar', 50, 'Pack que incluye 4 entradas de 1 día al Alhambra Park, 2 adulto (11 a 59 años) y 2 infantiles (4 a 10 años). Las 4 entradas serán válidas para el mismo día. Válida durante la Temporada 2019.');
+
+INSERT INTO entradas
+	VALUES (4, 'Entrada Tarde',  15, 'Entrada de adulto (11 a 59 años) de tarde al Alhambra Park. Válida de lunes a domingos de la temporada 2019. Consulte los diferentes horarios de acceso de la entrada de tarde.');
+
+INSERT INTO entradas
+	VALUES (5, 'Entrada Reducida Tarde', 10, 'Entrada Infantil (4 a 10 años) o senior (a partir de 60 años) de 1 día al Alhambra Park. Válida de lunes a domingos de la temporada 2019. Consulte los diferentes horarios de acceso de la entrada de tarde.');
+
+INSERT INTO entradas
+	VALUES (6, 'Entrada Familiar Tarde', 35, 'Pack que incluye 4 entradas de 1 día al Alhambra Park, 2 adulto (11 a 59 años) y 2 infantiles (4 a 10 años). Las 4 entradas serán válidas para el mismo día. Consulte los diferentes horarios de acceso de la entrada de tarde.');

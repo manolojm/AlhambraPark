@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        
+
+        {% block  stylesheet %}
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+            <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
+            <link rel="stylesheet" href="{{ asset('css/estilos.css') }}"> 
+            <link rel="shortcut icon" href="{{ asset('images/favicon.ico') }}" type="image/x-icon">
+            <link rel="icon" href="{{ asset('images/favicon.ico') }}" type="image/x-icon">
+        {% endblock %}
+
+        <title>{% block title %}{% endblock %}</title>
+
+    </head>
+
+    <body>   
+
+        <!-- Cabecera -->
+        <header>
+            {% block header %}
+                <!-- Título -->
+                <h1 class="text-center">
+                    <span class="titulo" >Alhambra Park</span>
+                </h1>
+
+                <!-- Navbar -->
+                <nav id = "nav" class="navbar navbar-expand-lg navbar-dark lighten-1">
+
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-555"
+                            aria-controls="navbarSupportedContent-555" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent-555">
+                        <ul class="navbar-nav mr-auto">
+
+                            <!-- Inicio -->
+                            <li class="nav-item active">
+                                <a class="enlaceNav nav-link" href="{{ path('inicio') }}">Inicio</a>
+                            </li>
+
+                            <!-- Atracciones -->
+                            <li class="nav-item active">
+                                <a class="enlaceNav nav-link" href="{{ path('atracciones') }}">Atracciones</a>
+                            </li>
+
+                            <!-- Entradas -->
+                            <li class="nav-item active">
+                                <a class="enlaceNav nav-link" href="{{ path('entradas') }}">Entradas</a>
+                            </li>
+
+                            <!-- Contacto -->
+                            <li class="nav-item active">
+                                <a class="enlaceNav nav-link" href="{{ path('contacto') }}">Contacto</a>
+                            </li>
+                        </ul>
+
+                        <ul class="navbar-nav ml-auto nav-flex-icons">
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <li class="nav-item">
+                                    <a class="nav-link waves-effect waves-light">
+
+                                        <!-- Mensajes -->
+                                        <a class="enlaceNav nav-link" href="{{ path('mensajes') }}">
+                                            <i class="fas fa-envelope"></i></a>
+
+                                    </a>
+                                </li>
+                            {% endif %}
+                            {% if is_granted('ROLE_USER') %}
+                                <li class="nav-item avatar dropdown">
+                                    <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-55" data-toggle="dropdown" aria-haspopup="true"
+                                       aria-expanded="false">
+                                        <img class="nav-profile-img border border-dark 
+                                             bg-white rounded-circle" src="{{ app.user.avatarUrl(75) }}">
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right dropdown-secondary" aria-labelledby="navbarDropdownMenuLink-55">
+
+                                        <!-- Perfil -->
+                                        <a class="dropdown-item" href="{{ path('app_account') }}">Perfil</a>
+
+                                        <!-- Atracciones favoritas -->
+                                        <a class="dropdown-item" href="{{ path('mostrarfavorito', {usuario: app.user.id}) }}">Favoritos</a>
+
+                                        <!-- Entradas compradas -->
+                                        <a class="dropdown-item" href="{{ path('mostrarentradas', {usuario: app.user.id}) }}">Mis entradas</a>
+
+                                        {% if is_granted('ROLE_ADMIN') %}
+                                            <!-- Datos entradas compradas -->
+                                            <a class="dropdown-item" href="{{ path('entradasdatos')}}">Datos entradas</a>
+                                        {% endif %}
+
+                                        <!-- Desconectarse -->
+                                        <a class="dropdown-item" href="{{ path('app_logout') }}">Desconectarse</a>
+                                    </div>
+                                {% else %}
+
+                                    <!-- Iniciar sesión -->
+                                    <a class="nav-link active" href="{{ path('app_login') }}">Iniciar Sesión</a>
+
+                                    <!-- Registrarse -->
+                                    <a class="nav-link active" href="{{ path('app_register') }}">Registrarse</a>
+                                </li>
+
+                            {% endif %}
+                        </ul>
+                    </div>
+                </nav>
+
+            {% endblock %}
+        </header>
+
+        <!-- Body -->
+    {% block body %}{% endblock %}
+
+    <!-- Footer -->
+    <footer class="page-footer font-small indigo" style = "color: #f9f7f7"> 
+        {% block footer %}
+
+            <!-- Footer Links -->
+            <div class="container">
+
+                <!-- Grid row-->
+                <div class="row text-center d-flex justify-content-center pt-5 mb-3">
+
+                    <!-- Grid column -->
+                    <div class="col-md-2 mb-3">
+                        <h6 class="text-uppercase font-weight-bold">
+                            <a href="{{ path('inicio') }}">Inicio</a>
+                        </h6>
+                    </div>
+                    <!-- Grid column -->
+
+                    <!-- Grid column -->
+                    <div class="col-md-2 mb-3">
+                        <h6 class="text-uppercase font-weight-bold">
+                            <a href="{{ path('atracciones') }}">Atracciones</a>
+                        </h6>
+                    </div>
+                    <!-- Grid column -->
+
+                    <!-- Grid column -->
+                    <div class="col-md-2 mb-3">
+                        <h6 class="text-uppercase font-weight-bold">
+                            <a href="{{ path('entradas') }}">Entradas</a>
+                        </h6>
+                    </div>
+                    <!-- Grid column -->
+
+                    <!-- Grid column -->
+                    <div class="col-md-2 mb-3">
+                        <h6 class="text-uppercase font-weight-bold">
+                            <a href="{{ path('contacto') }}">Contacto</a>
+                        </h6>
+                    </div>
+                    <!-- Grid column -->
+
+                </div>
+                <!-- Grid row-->
+                <hr class="rgba-white-light" style="margin: 0 15%;">
+
+                <!-- Grid row-->
+                <div class="row d-flex text-center justify-content-center mb-md-0 mb-4">
+
+                    <!-- Grid column -->
+                    <div class="col-md-8 col-12 mt-5">
+                        <p style="line-height: 1.7rem">
+                            Sed ut perspiciatis unde omnis iste natus error 
+                            sit voluptatem accusantium doloremque laudantium, 
+                            totam rem aperiam, eaque ipsa quae ab illo 
+                            inventore veritatis et quasi architecto beatae 
+                            vitae dicta sunt explicabo. Nemo enim ipsam 
+                            voluptatem quia voluptas sit aspernatur aut odit 
+                            aut fugit, sed quia consequuntur.
+                        </p>
+                    </div>
+                    <!-- Grid column -->
+
+                </div>
+                <!-- Grid row-->
+                <hr class="clearfix d-md-none rgba-white-light" style="margin: 10% 15% 5%;">
+
+                <!-- Grid row-->
+                <div class="row pb-3">
+
+                    <!-- Grid column -->
+                    <div class="col-md-12">
+
+                        <div class="mb-5 d-flex justify-content-center">
+
+                            <!-- Facebook -->
+                            <a class="fb-ic">
+                                <i class="fab fa-facebook-f fa-lg white-text mr-4"> </i>
+                            </a>
+                            <!-- Twitter -->
+                            <a class="tw-ic">
+                                <i class="fab fa-twitter fa-lg white-text mr-4"> </i>
+                            </a>
+                            <!-- Google +-->
+                            <a class="gplus-ic">
+                                <i class="fab fa-google-plus-g fa-lg white-text mr-4"> </i>
+                            </a>
+                            <!--Linkedin -->
+                            <a class="li-ic">
+                                <i class="fab fa-linkedin-in fa-lg white-text mr-4"> </i>
+                            </a>
+                            <!--Instagram-->
+                            <a class="ins-ic">
+                                <i class="fab fa-instagram fa-lg white-text mr-4"> </i>
+                            </a>
+                            <!--Pinterest-->
+                            <a class="pin-ic">
+                                <i class="fab fa-pinterest fa-lg white-text"> </i>
+                            </a>
+
+                        </div>
+
+                    </div>
+                    <!-- Grid column -->
+
+                </div>
+                <!-- Grid row-->
+
+            </div>
+            <!-- Footer Links -->
+
+            <!-- Copyright -->
+            <div class="footer-copyright text-center py-3">© 2019 Copyright:
+                <a href=""> Manuel Antonio Jiménez Martínez</a>
+            </div>
+            <!-- Copyright -->
+
+            <!-- Footer -->
+
+        {% endblock %}
+    </footer>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <script>
+
+    </script>
+</body>
+</html>

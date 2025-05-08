@@ -1,0 +1,192 @@
+{# atraccion.html.twig #}
+{% extends 'base.html.twig' %}
+{% block head %}
+
+    {% block title %}{{ atraccion.nombre }}{% endblock %}
+
+{% endblock %}
+
+{% block body %}
+
+    <div>
+        <main>
+
+            <!-- Título de la sección -->
+            <h2 class="text-center">
+                {{ atraccion.nombre }}   
+            </h2>
+
+            <!-- Imagen y recomendaciones -->
+            <div class="entradasCelda">
+                
+                <img id = "fotoPrincipal" class="m-2 center" alt="..." 
+                     width="600px" height="400px"
+                     src="{{ asset('images/' ~ atraccion.id ~ '/' ~ atraccion.imagen1 ~ '.jpg') }}">
+
+                <div id = "tablaRecomendacion" class="border border-dark m-2 p-2 text-center" 
+                     style = "color: black; background-color: white;">  
+
+                    {% if atraccion.intensidad == 3 %}
+
+                        <h5>Intensidad:</h5>
+                        <i class="pb-3 recomendacion fas fa-laugh-beam text-danger">
+                            Elevada
+                        </i>
+                        <h5 class="entradasCelda">Edad recomendada:</h5>
+                        <i class="pb-3 recomendacion fas fa-birthday-cake text-danger">
+                            12 años
+                        </i> 
+                        <h5 class="entradasCelda">Altura recomendada:</h5>
+                        <i class="pb-3 recomendacion fas fa-ruler-vertical text-danger">
+                            1.30 metros
+                        </i> 
+
+                    {% elseif atraccion.intensidad == 2 %}
+
+                        <h5>Intensidad:</h5>
+                        <i class="pb-3 recomendacion fas fa-laugh-beam text-warning">
+                            Media
+                        </i>
+                        <h5 class="entradasCelda">Edad recomendada:</h5>
+                        <i class="pb-3 recomendacion fas fa-birthday-cake text-warning">
+                            10 años
+                        </i> 
+                        <h5 class="entradasCelda">Altura recomendada:</h5>
+                        <i class="pb-3 recomendacion fas fa-ruler-vertical text-warning">
+                            1.20 metros
+                        </i>    
+
+                    {% elseif atraccion.intensidad == 1 %}
+
+                        <h5>Intensidad:</h5>
+                        <i class="pb-3 recomendacion fas fa-laugh-beam text-success">
+                            Baja
+                        </i>
+                        <h5 class="entradasCelda">Edad recomendada:</h5>
+                        <i class="pb-3 recomendacion fas fa-birthday-cake text-success">
+                            8 años
+                        </i> 
+                        <h5 class="entradasCelda">Altura recomendada:</h5>
+                        <i class="pb-3 recomendacion fas fa-ruler-vertical text-success">
+                            0.90 metros
+                        </i>   
+
+                    {% endif %}
+                </div>
+
+            </div>
+
+            <!-- Iconos botones -->
+            <div class="text-center">
+
+                <i class="p-2 m-2 far fa-arrow-alt-circle-left" 
+                   id = "pasarFotoIzquierda" onclick="cambiarFotoAnterior();"></i>
+                   {% if is_granted('ROLE_USER') %}
+                <i id = "estrellaVacia" onclick="rellenarEstrella(); anadirFavorito({{ atraccion.id }});" 
+                   class="far fa-star"></i>
+                   {% endif %}
+                <i id = "estrellaLlena" class="fas fa-star"></i>
+                <i class="p-2 m-2 far fa-arrow-alt-circle-right" 
+                   id = "pasarFotoDerecha" onclick="cambiarFotoSiguiente();"></i>
+
+            </div>
+
+            <!-- Descripción -->
+            <div class="pb-3 descripcion">
+                {{ atraccion.descripcion }}
+            </div> 
+
+            <!-- Botón volver -->
+            <div class="text-center">   
+                <a href="{{path('atracciones')}}">
+                <button class="btn btn-secondary">
+                    Volver
+                </button>
+                </a>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        
+        /**********************************************************************/
+        
+        // Función para añadir una atracción a favoritos
+        function anadirFavorito(idAtraccion) {
+                
+                var atraccion = idAtraccion;
+                {% if is_granted('ROLE_USER') %}
+                    var usuario = "{{app.user.id}}";  
+                {% endif %}
+                
+                $.ajax({
+                    type: "POST",
+                    url: "{{path('atraccionfavorito')}}",
+                    data: {
+                        atraccion: atraccion,
+                        usuario: usuario
+                    },
+                    success: function (response) {}
+                });
+            } 
+
+        /**********************************************************************/
+
+        // Rellena el icono de favoritos al pulsarlo
+        function rellenarEstrella() {
+            document.getElementById("estrellaVacia").style.display = "none";
+            document.getElementById("estrellaLlena").style.display = "initial";
+        }
+
+        /**********************************************************************/
+
+        /* Variables utilizadas para cambiar la imagen de la galería */
+        // Vector donde guardamos las fotos
+        var vectorFotos = ["{{ asset('images/' ~ atraccion.id ~ '/' ~ atraccion.imagen1 ~ '.jpg') }}",
+            "{{ asset('images/' ~ atraccion.id ~ '/' ~ atraccion.imagen2 ~ '.jpg') }}",
+            "{{ asset('images/' ~ atraccion.id ~ '/' ~ atraccion.imagen3 ~ '.jpg') }}"];
+
+        var laFotoSiguiente = 0 + 1; // La foto siguiente es la segunda
+        var laFotoAnterior = vectorFotos.length - 1; // La foto anterior es la última
+
+        var miFotoAnterior = vectorFotos[laFotoAnterior];
+        var miFotoSiguiente = vectorFotos[laFotoSiguiente];
+
+        /* Funciones utilizadas para cambiar la imagen de la galería */
+        // Funcion para seleccionar la foto anterior
+        function fotoAnterior() {
+            if (laFotoAnterior == 0) { // Si ya es la primera foto
+                laFotoAnterior = vectorFotos.length - 1; // ... pasamos a la última
+            } else {
+                laFotoAnterior--; // ... si no lo es, pasamos a la anterior
+            }
+            miFotoAnterior = vectorFotos[laFotoAnterior]; // Actualiza la foto anterior
+        }
+
+        // Funcion para seleccionar la foto siguiente
+        function fotoSiguiente() {
+            if (laFotoSiguiente == vectorFotos.length - 1) { // Si ya es la última foto...
+                laFotoSiguiente = 0; // ... pasamos a la primera 
+            } else {
+                laFotoSiguiente++; // ... si no lo es, pasamos a la siguiente
+            }
+            miFotoSiguiente = vectorFotos[laFotoSiguiente]; // Actualiza la foto siguiente
+        }
+
+        // Funcion para cambiar de imagen a la anterior
+        function cambiarFotoAnterior() {
+            document.getElementById("fotoPrincipal").src = miFotoAnterior;
+            fotoAnterior();
+        }
+
+        // Funcion para cambiar de imagen a la siguiente
+        function cambiarFotoSiguiente() {
+            document.getElementById("fotoPrincipal").src = miFotoSiguiente;
+            fotoSiguiente();
+        }
+
+        /**********************************************************************/
+
+    </script>
+
+{% endblock %}

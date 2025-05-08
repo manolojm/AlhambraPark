@@ -1,0 +1,91 @@
+{# entrada.html.twig #}
+{% block body %}
+
+        <div class = "entradasTabla">
+
+            {{ entrada.nombre }}
+
+            <div class="entradasCelda">
+
+                <div class="w-25 justify-content-center"></div>
+
+                <div class="w-25">Precio</div>
+
+                <div class="w-25">Cantidad</div>
+
+                <div class="w-25"></div>
+
+            </div>
+
+
+            <div class="entradasCelda">
+
+                <div id = "nombre{{entrada.id}}" class="w-25">
+                    
+                </div>
+
+                <div id = "precio{{entrada.id}}" class="w-25">
+                    {{ entrada.precio }} €
+                </div>
+
+                <div class="w-25">
+                    <select id = "numeroEntradas{{entrada.id}}" 
+                            {% if is_granted('ROLE_USER') %}
+                                onchange="calcularPrecio{{entrada.id}}();"
+                                {% endif %}>
+                        <option value="0" selected="selected">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+
+                <div id = "condicionModal{{entrada.id}}"  class="w-25" 
+                     onclick="desplegarCondicion({{entrada.id}});">
+                    info <i class="fas fa-arrow-down"></i>
+                </div>
+
+            </div>
+
+            
+            <div id = "condicion{{entrada.id}}" class="border-top mt-2 pt-2 w-100"
+                 style = "display: none;">
+                {{ entrada.condicion }}
+                
+            </div> 
+                   
+        </div> 
+
+    <script>
+        
+        /**********************************************************************/
+        
+        // Función para calcular el precio de las entradas
+        var precioFinal = 0;  
+        function calcularPrecio{{entrada.id}}() {
+            
+            var numeroEntradas{{entrada.id}} = 
+                    document.getElementById("numeroEntradas{{entrada.id}}").value;    
+            var precioEntrada{{entrada.id}} = 
+                    {{entrada.precio}};
+            var precioEntradas{{entrada.id}} = 
+                    numeroEntradas{{entrada.id}} * precioEntrada{{entrada.id}};
+            
+            document.getElementById("resumen{{entrada.id}}").style = "display: flex";
+            
+            document.getElementById("cantidad" + {{entrada.id}} + "").innerHTML 
+                    = "Número de entradas: " + numeroEntradas{{entrada.id}};
+            
+            document.getElementById("total" + {{entrada.id}} + "").innerHTML 
+                    = "Total: " + precioEntradas{{entrada.id}} + " €";
+            
+            precioFinal += precioEntradas{{entrada.id}};
+        }  
+        
+        /**********************************************************************/
+
+    </script>
+
+{% endblock %}

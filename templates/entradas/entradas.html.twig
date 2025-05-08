@@ -1,0 +1,183 @@
+{# entradas.html.twig #}
+{% extends 'base.html.twig' %}
+{% block head %}
+
+    {% block title %}Entradas{% endblock %}
+
+{% endblock %}
+
+{% block body %}
+
+    <main>
+
+        <h2 class = "text-center">Entradas
+
+            {% if is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('easyadmin') }}" >
+                    <button type="button" class="btn btn-success">
+                        Editar<i class="fas fa-pencil-alt"></i>
+                    </button>
+                </a>
+            {% endif %}
+        </h2>
+
+        <!-- Seleccionar fecha -->
+        Paso 1: Seleccione fecha
+
+        <div class = "entradasTabla">
+
+            {% if is_granted('ROLE_USER') %}
+                <form class="text-center">
+                    Fecha seleccionada: 
+                    <input type="date" id ="fechaEntrada"
+                           max="2019-12-31">
+                </form>
+                <div class="entradasCelda">
+                    IMPORTANTE: tus entradas son válidas únicamente 
+                    en la fecha de visita seleccionada
+                </div>
+                <div class="entradasCelda">
+                    IMPORTANTE: estos precios y promociones online no 
+                    están disponibles en las taquillas del parque
+                </div>
+                <div class="entradasCelda">
+                    NOTA: si no visualiza el selector de fechas, introdúzcala aquí en 
+                    formato aaaa-mm-dd y persione continuar
+                </div>
+                <div class="entradasCelda">
+                        <input id ="fechaEntrada2">
+                        <button onclick="continuar()">Continuar</button>
+                </div>
+
+            {% else %}
+                <h4 class = "text-center">
+                    Inicie sesión para poder comprar entradas
+                </h4>
+            {% endif %}
+        </div>
+
+        <!-- Seleccionar entradas -->
+        Paso 2: Seleccione sus entradas
+
+        {% if entradas|length > 0 %}
+
+            {% for entrada in entradas %}
+                {% include 'entradas/entrada.html.twig' %}
+            {% endfor %}
+        {% else %}
+            <div class = "entradasTabla" id = "resumen">
+                <h4 class="text-center">No hay entradas disponibles</h4>
+
+            </div>
+        {% endif %}
+
+        <!-- Confirmación y pago -->
+        Paso 3: Confirmación y pago
+
+        <div class = "entradasTabla" id = "resumen">
+            {% if is_granted('ROLE_USER') %}
+
+                Resumen:
+                {% for entrada in entradas %}
+
+                    <div class="entradasCelda" id ="resumen{{ entrada.id }}"
+                         style = "display: none">
+                        <div class="w-25">{{ entrada.nombre }}</div>
+                        <div class="w-25 text-center" id = "cantidad{{ entrada.id }}"></div>
+                        <div class="w-25 text-center" id = "total{{ entrada.id }}"></div>
+                    </div>
+
+                {% endfor %}
+
+                <div class="entradasCelda">
+                    <button onclick="comprar();">Comprar</button> 
+                </div>
+            {% else %}
+                <h4 class = "text-center">
+                    Inicie sesión para poder comprar entradas
+                </h4>
+            {% endif %}
+        </div>
+
+    </main>
+
+    <script>
+
+        /**********************************************************************/
+
+        // La fecha mínima para la compra de entradas es "hoy"
+        {% if is_granted('ROLE_USER') %}
+            fechaEntrada.min = new Date().toISOString().split("T")[0];
+        {% endif %}
+
+
+            /**********************************************************************/
+
+            // Función para mostrar las condiciones de la entrada seleccionada
+            function desplegarCondicion(laEntrada) {
+                var estadoDespliegue = document.getElementById("condicion" + laEntrada + "");
+
+                if (estadoDespliegue.style.display == "none") {
+                    estadoDespliegue.style.display = "table";
+                } else {
+                    estadoDespliegue.style.display = "none";
+                }
+            }
+            
+            var fechaError = false;
+            function continuar(){
+                fechaError = true;
+            }
+
+            /**********************************************************************/
+
+            // Función para poder comprar las entradas
+            function comprar() {
+
+        {% if is_granted('ROLE_USER') %}
+                var usuario = "{{app.user.id}}";
+        {% endif %}
+
+        if (fechaError == true){
+            var fechaEntrada = $("#fechaEntrada2").val();
+        } else {
+            var fechaEntrada = $("#fechaEntrada").val();
+        }
+                
+                var vectorNumEntradas = [];
+                var vectorIdEntradas = [];
+
+                if (fechaEntrada == "") {
+                    alert("Seleccione una fecha, por favor");
+                } else {
+
+        {% for entrada in entradas %}
+                    if ($("#numeroEntradas{{entrada.id}}").val() != 0) {
+                        vectorNumEntradas.push($("#numeroEntradas{{entrada.id}}").val());
+                        vectorIdEntradas.push({{entrada.id}});
+                    }
+        {% endfor %}
+
+                    $.ajax({
+                        type: "POST",
+                        url: '{{ (path('comprarentradas')) }}',
+                        data: {
+                            usuario: usuario,
+                            fechaEntrada: fechaEntrada,
+                            vectorNumEntradas: vectorNumEntradas,
+                            vectorIdEntradas: vectorIdEntradas
+                        },
+                        success: function (response) {
+        {% if is_granted('ROLE_USER') %}
+                            alert("Entradas compradas con éxito");
+                            window.location.replace("{{ path('mostrarentradas',
+                                {usuario: app.user.id}) }}");                        
+        {% endif %}
+                        }
+                    });
+                }
+            }
+
+    </script>
+
+{% endblock %}

@@ -1,0 +1,126 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mi perfil{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    <link rel="stylesheet" href="{{ asset('css/account.css') }}">
+{% endblock %}
+
+{% block body %}
+
+    <main>
+
+        <!-- Título de la sección -->
+        <h2 class="text-center">Perfil</h2>
+
+        <!-- Nombre -->
+        <div class="entradasTabla">
+            <strong  class="w-25">Nombre:</strong> {{ app.user.firstName }}
+            <i class="fas fa-pencil-alt float-right" onclick="mostrar('nombre');"></i>
+
+            <div class="border-top mt-2 pt-2 w-100" style="display:none;"
+                 id="datonombre">
+                <i class="fas fa-user"></i>&nbsp;
+                <input id ="nombre" type="text" name="firstname">
+
+            </div> 
+
+        </div>
+
+        <!-- Email -->
+        <div class="entradasTabla">
+            <strong>Email:</strong> {{ app.user.email }}
+            <i class="fas fa-pencil-alt float-right" onclick="mostrar('email');"></i>
+
+            <div class="border-top mt-2 pt-2 w-100" style="display:none;"
+                 id="datoemail">
+                <i class="fas fa-envelope"></i>&nbsp;
+                <input id ="email" type="text" name="email">
+
+            </div>
+        </div>
+
+        <!-- Twitter -->
+        <div class="entradasTabla">
+            <strong>Twitter:</strong> 
+            {% if app.user.twitterUsername %}
+                {{ app.user.twitterUsername }}
+            {% else %}
+                No tiene
+            {% endif %}
+            <i class="fas fa-pencil-alt float-right" onclick="mostrar('twitter');"></i>
+
+            <div class="border-top mt-2 pt-2 w-100" style="display:none;"
+                 id="datotwitter">
+                <i class="fab fa-twitter"></i>&nbsp;
+                <input id ="twitter" type="text" name="twitter">
+            </div>
+        </div>
+
+        <!-- Contraseña -->
+        <div class="entradasTabla">
+            <strong>Contraseña:</strong> * * * * *
+            <i class="fas fa-pencil-alt float-right" onclick="mostrar('pass');"></i>
+
+            <div class="border-top mt-2 pt-2 w-100" style="display:none;"
+                 id="datopass">
+                <i class="fas fa-key"></i>&nbsp;
+                <input id ="pass" type="password" name="psw">
+            </div>
+        </div>
+
+        <div class="text-center"> 
+            <!-- Botón guardar -->
+            <button class="btn btn-success" onclick="cambiarDatos()">
+                Guardar
+            </button>
+
+            <!-- Botón volver -->
+            <a href="{{path('inicio')}}">
+                <button class="btn btn-secondary">
+                    Volver
+                </button>
+            </a>
+        </div>
+
+    </main>
+
+    <script>
+
+        function mostrar(dato) {
+            var estadoDespliegue = document.getElementById("dato" + dato + "");
+
+            if (estadoDespliegue.style.display == "none") {
+                estadoDespliegue.style.display = "table";
+            } else {
+                estadoDespliegue.style.display = "none";
+            }
+        }
+
+        function cambiarDatos() {
+            var nombre = $('#nombre').val();
+            var twitter = $('#twitter').val();
+            var email = $('#email').val();
+            var pass = $('#pass').val();
+
+            $.ajax({
+                type: "POST",
+                url: "{{path('editardatos', {'usuarioId': app.user.id})}}",
+                data: {
+                    nombre: nombre,
+                    twitter: twitter,
+                    email: email,
+                    pass: pass
+                },
+                success: function (response) {
+                    window.location.reload();
+                    alert("Cambios guardados");
+                }
+            });
+        }
+    </script>
+
+{% endblock %}
+

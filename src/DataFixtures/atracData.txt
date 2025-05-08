@@ -1,0 +1,29 @@
+INSERT INTO atracciones
+	VALUES (1, 'Montaña Rusa', 'La Montaña Rusa eleva a los más atrevidos a más de 500 metros sobre el nivel del mar para contemplar una de las mejores vistas de la ciudad de Granada y al mismo tiempo disfrutar de un trepidante viaje por el bosque a más de 80 km/h.', '1', '2', '3', 3);
+
+INSERT INTO atracciones
+	VALUES (2, 'Gran Noria', 'Esta rueda panorámica, inaugurada en 2014, está situada en el nivel más alto de la montaña. Os permitirá subir hasta las nubes y disfrutar de unas increíbles vistas de la ciudad de Granada, el mar y su entorno.', '1', '2', '3', 2);
+
+INSERT INTO atracciones
+	VALUES (3, 'Tazas Giratorias', '¡Gira y gira, solo o en familia, y pásalo estupendamente! Una atracción para toda la familia, situada en el área panorámica del parque. Mayores y pequeños podréis disfrutar juntos en esta atracción.', '1', '2', '3', 1);
+
+INSERT INTO atracciones
+	VALUES (4, 'Troncos Locos', 'Un emocionante y refrescante recorrido con desniveles impresionantes en medio del Oeste americano.', '1', '2', '3', 3);
+
+INSERT INTO atracciones 
+	VALUES (5, 'Barca Vikinga', 'Con la Barca Vikinga te podrás levantar hasta tocar las nubes y después balancearte a casi 180⁰. ¡Una aventura trepidante!', '1', '2', '3', 3);
+
+INSERT INTO atracciones
+	VALUES (6, 'Coches de Choque', 'Un clásico de los parques de atracciones y las ferias. ¡Poneros el cinturón y a disfrutar! ', '1', '2', '3', 2);
+
+INSERT INTO atracciones
+	VALUES (7, 'Sillas Voladora', 'Sensaciones de vuelo libre encima de Granada. No te puedes perder la combinación de giros, elevaciones, vértigo y velocidad que ofrece esta atracción.', '1', '2', '3', 2);
+
+INSERT INTO atracciones
+	VALUES (8, 'Globos Infantiles', 'Atracción para toda la familia, donde unas cestas transportan a los pasajeros en un movimiento circular alrededor del eje que las sostiene.', '1', '2', '3', 1);
+
+INSERT INTO atracciones
+	VALUES (9, 'Vagoneta Virtual', 'Descubrid la primera atracción de realidad virtual de España. Un mundo fantástico aparecerá en vuestro entorno mientras disfrutáis del recorrido con el clásico tren rápido.', '1', '2', '3', 2);
+
+INSERT INTO atracciones
+	VALUES (10, 'Rodeo del Oeste', 'Los más pequeños podrán viajar por el salvaje Oeste americano con el Pony Rodeo, ¡un tren monocarril de lo más entretenido!', '1', '2', '3', 1);

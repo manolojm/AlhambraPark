@@ -1,0 +1,100 @@
+{# entradas.html.twig #}
+{% extends 'base.html.twig' %}
+{% block head %}
+
+    {% block title %}Entradas Compradas{% endblock %}
+
+{% endblock %}
+
+{% block body %}
+
+    <main>
+
+        <h2 class="text-center">
+            Tus entradas compradas
+        </h2>
+
+        {% if entradas|length > 0 %}
+
+            <div class = "entradasTabla" id = "resumen">
+
+                <div class = "d-flex" >
+                    <div style = "width: 20%"><strong>Fecha compra</strong></div>
+                    <div style = "width: 55%"><strong>Tipo de entrada</strong></div>
+                    <div style = "width: 15%"><strong>Cantidad</strong></div>
+                </div>
+            </div>
+
+            {% for entrada in entradas|sort %}
+
+                <div class = "entradasTabla" id = "resumen">
+
+                    <div class="d-flex mt-2">
+                        <div style = "width: 20%">{{ entrada.fechaActual|date('d-m-Y') }}</div>
+                        <div style = "width: 55%">{{ entrada.entrada.nombre }}</div>
+                        <div style = "width: 20%">{{ entrada.numEntradas }} entrada/s</div>
+                        <div style = "width: 5%" id = "condicionModal{{entrada.id}}"
+                             onclick="desplegarCondicion({{entrada.id}});">
+                            <i class="fas fa-info"></i>
+                        </div>
+
+                    </div>
+
+                    <div id = "condicion{{entrada.id}}" class=" w-100" style = "display: none;">
+                        <div class="entradasCelda float-right">
+                            Entrada válida para el &nbsp;
+                            <strong>{{ entrada.fechaEntrada|date('d-m-Y') }}</strong></div>  
+                            {#<div class=" border-top text-right mt-2 pt-2">
+                                Precio total: {{ entrada.numEntradas * entrada.entrada.precio }} €</div>#}
+                    </div> 
+                </div>
+
+            {% endfor %}
+        {% else %}
+
+            <div class = "bg-white p-2 m-2 text-center" style= "
+                 border: 1px solid black; padding: 5%" id = "resumen">
+
+                <h4>No tiene entradas compradas</h4>
+                <h5>¡No te quedes sin la tuya!</h5>
+
+                <a href="{{ path('entradas') }}">
+                    <button>Comprar</button>
+                </a>
+
+            </div>
+
+        {% endif %}
+
+        <div class="text-center">
+
+            <!-- Botón volver -->
+            <a href="{{path('inicio')}}">
+                <button type="button" class="btn btn-secondary">
+                    Volver
+                </button>
+            </a>
+        </div>
+
+    </main>
+
+    <script>
+
+        /**********************************************************************/
+
+        // Función para mostrar las condiciones de la entrada seleccionada
+        function desplegarCondicion(laEntrada) {
+            var estadoDespliegue = document.getElementById("condicion" + laEntrada + "");
+
+            if (estadoDespliegue.style.display == "none") {
+                estadoDespliegue.style.display = "table";
+            } else {
+                estadoDespliegue.style.display = "none";
+            }
+        }
+
+        /**********************************************************************/
+
+    </script>
+
+{% endblock %}

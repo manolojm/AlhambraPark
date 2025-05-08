@@ -1,0 +1,84 @@
+{# favoritos.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block head %}
+    {% block title %}Atracciones favoritas{% endblock %}
+{% endblock %}
+
+{% block body %}
+
+    <main>
+
+        <!-- Título de la sección -->
+        <h1 class="text-center">
+            Tus atracciones favoritas
+        </h1>
+
+        {% if favoritos|length > 0 %}
+
+            {% for favorito in favoritos %}   
+                <div class = "entradasTabla d-flex" id = "favorito{{favorito.id}}">
+
+                    <h3 style = "width: 90%">{{ favorito.atraccion.nombre }}</h3>
+
+                    <a class="enlaceLimpio"
+                       href="{{ path('atraccion', { 'nombre': favorito.atraccion.nombre }) }}">
+                        <i class="far fa-eye" style = "width: 10%; color: green; font-size:30px;"></i>
+                    </a>
+
+                    <i style = "width: 10%; color: red; font-size:30px;" 
+                       class="fas fa-times text-center" 
+                       onclick="quitarFavorito({{favorito.id}})">
+                    </i>
+
+                </div>
+
+            {% endfor %}
+        {% else %}
+            <div class = "entradasTabla" id = "resumen">      
+                <h4 class="text-center">No hay atracciones favoritas</h4>
+            </div>
+        {% endif %}
+
+        <div class="text-center">
+
+            <!-- Botón volver -->
+            <a href="{{path('inicio')}}">
+                <button type="button" class="btn btn-secondary">
+                    Volver
+                </button>
+            </a>
+        </div>
+
+    </main>
+
+
+    <script>
+
+        /**********************************************************************/
+
+        // Función para quitar una atracción de favoritos
+        function quitarFavorito(idAtraccion) {
+
+            var miFavorito = document.getElementById("favorito" + idAtraccion + "");
+            miFavorito.remove();
+
+            var atraccion = idAtraccion;
+
+            $.ajax({
+                type: "POST",
+                url: "{{path('quitarfavorito')}}",
+                data: {
+                    atraccion: atraccion
+                },
+                success: function (response) {
+
+                }
+            });
+        }
+
+        /**********************************************************************/
+
+    </script>
+
+{% endblock %}
